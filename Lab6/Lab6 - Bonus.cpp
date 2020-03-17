@@ -38,7 +38,12 @@ int main(){
         cout << "\n\n\t\tPlease input date (mm/dd/yyy): ";
         cin >> mm >> buff >> dd >> buff >> yy;
 
-        if (dd >= x[mm-1] || mm >= 12) // if days >= to days in the month and if month is >= 12
+            if (leap(yy))
+                x[1] = 29; // Account for leap year
+            else
+                x[1] = 28;
+
+        if (dd > x[mm-1] || mm > 12) // if days >= to days in the month and if month is >= 12
         {
             do
             {
@@ -46,15 +51,13 @@ int main(){
                 cout << "\n\n\t\tPlease input date (mm/dd/yyy): ";
                 cin >> mm >> buff >> dd >> buff >> yy;
 
-            } while (dd >= x[mm-1] || mm >= 12); // Check until input is correct
+            } while (dd >= x[mm-1] || mm > 12); // Check until input is correct
             
         }
 
         for (i = 0, days = 0; i < mm - 1; days += x[i++]); // calculate days before the month mm
 
         days = days + dd; // add days in the month
-        if (leap(yy) && mm > 2)
-            days = days + 1;
 
         cout << "\n\n\t\tThere are " << days << " days from the beginning of the year past.";
         cout << "\n\n\t\tDo more (Y/N)? ";
