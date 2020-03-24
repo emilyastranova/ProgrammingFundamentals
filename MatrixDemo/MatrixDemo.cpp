@@ -15,13 +15,36 @@ void printOut(int ax[][3], int ay[][3])
     }
 }
 
+void printOut(int ax[][3])  // Made this so I could only print the power matrix
+{
+    int i,j;
+    for(i = 0; i < 3; i++)  {
+            cout << "\n\t\t";
+        for(j=0; j< 3; j++)
+            cout << setw(4) << ax[i][j] << " ";
+    }
+}
+
 void findSum(int a[][3], int b[][3], int c[][3])
 {
     int i,j;
     for(i = 0; i < 3; i++)  
         for(j=0; j< 3; j++)
             c[i][j] = a[i][j] + b[i][j];
-    
+
+}
+
+void findPow(int x[][3], int y[][3], int z[][3])
+{
+    int i, j, k;
+    for(i = 0; i < 3; i++)  
+        for(j = 0; j < 3; j++){
+            z[i][j] = 0;
+                for (k = 0; k < 3; k++)
+                    z[i][j] += x[i][k] ^ y[k][j];
+                
+        }
+
 }
 
 void findProd(int x[][3], int y[][3], int z[][3])
@@ -34,8 +57,6 @@ void findProd(int x[][3], int y[][3], int z[][3])
                     z[i][j] += x[i][k] * y[k][j];
                 
         }
-
-    
 }
 
 int main()
@@ -47,11 +68,14 @@ int main()
     int temp[3][3] = {};
     int i, j, k, m;
     printf("\n\t\t     Matrix X\t\t     Matrix Y\n\t\t");
-    printOut(x,y);
-    findSum(x,y,sum);
-    findProd(x,y,prod);
+    printOut(x, y);
+    findSum(x, y, sum);
+    findProd(x, y, prod);
     printf("\n\n\n\t\t      X + Y\t\t      X * Y");
     printOut(sum, prod);
+    printf("\n\n\n\t\t      X ^ Y\t\t");
+    findPow(x, y, power);
+    printOut(power);
     cout << "\n\n\n";
 
 }
