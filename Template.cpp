@@ -3,21 +3,15 @@
 #include <cmath>
 using namespace std;
 
-int main(){
-
-    char more = 'y';
+int main()
+{
 
     cout << setprecision(3) << fixed;
-
-    while (more == 'y' || more == 'Y') // Input loop, ends when user says N
+    char more, buff;
+    do // Input loop, ends when user says N
     {
 
-        cout << "\n\n\t\t\tDo more (Y/N)? ";
+        cout << "\n\t\t\tDo more (Y/N)? ";
         cin >> more;
-        
-    }
-    
-    cout << endl;
-
-    return 0;
+    } while (more == 'y' || more == 'Y');
 }
