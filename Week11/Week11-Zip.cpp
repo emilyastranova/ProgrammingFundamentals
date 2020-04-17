@@ -58,7 +58,7 @@ void shellSort(struct file data[])
     }
 } // End of shell sort
 
-int findIt(struct file x[], int tmp) //This is binary search (BROKEN)
+int findIt(struct file x[], char tmp[]) //This is binary search (BROKEN)
 {
     // int frst = 0, last = 19, mid;
 
@@ -77,12 +77,11 @@ int findIt(struct file x[], int tmp) //This is binary search (BROKEN)
 
     bool found = false; // Test passes with sequential search
     int index = 0;
-    int tmpZip = 0;
     for (int i = 0; i < 20; i++)
     {
-        tmpZip = atoi(x[i].zip); 
-        if (tmpZip == tmp)
+        if (strcmp(x[i].zip, tmp)==0)
         {
+            cout << "Found";
             found = true;
             index = i;
         }
@@ -112,7 +111,8 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
 int main()
 {
-    int i, j, loc, tgt;
+    int i, j, loc; 
+    char tgt[6];
     char more = 'Y', buff;
     struct file temp;
     struct file data[] =
@@ -155,6 +155,7 @@ int main()
         cout << "\n\nPlease input a zip to search: ";
         cin >> tgt;
         loc = findIt(data, tgt);
+        cout << tgt;
         if (loc > -1)
         {
             cout << "\n\n" << space(2) << "I am lucky, data at position " << loc + 1;
