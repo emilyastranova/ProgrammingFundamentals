@@ -22,6 +22,10 @@ int main()
         cout << "\n\n\t\t\t\tBlinn Prison Report";
         cout << "\n\n\n\tName\t Sentence \tEntered    Prison    Released\t Prison";
         cout << "\n\t\t   Months\t  Age \t  YR Month    Age  YR \t  Month";
+
+        outFile << "\n\n\t\t\t\tBlinn Prison Report";
+        outFile << "\n\n\n\tName\t  Sentence \tEntered    Prison    Released\t Prison";
+        outFile << "\n\t\t     Months\t  Age \t  YR Month    Age  YR \t  Month";
         bool firstRun = true;
         while (inFile >> name1 >> name2 >> sentence >> inMon >> inYear >> inAge)
         {
