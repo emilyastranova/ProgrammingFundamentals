@@ -80,8 +80,7 @@ int findIt(struct file x[], int tmp) //This is binary search (BROKEN)
     int tmpZip = 0;
     for (int i = 0; i < 20; i++)
     {
-        tmpZip = atoi(x[i].zip); 
-        if (tmpZip == tmp)
+        if (x[i].age == tmp)
         {
             found = true;
             index = i;
@@ -152,7 +151,7 @@ int main()
 
     while (more == 'y' || more == 'Y')
     {
-        cout << "\n\nPlease input a zip to search: ";
+        cout << "\n\nPlease input an age to search: ";
         cin >> tgt;
         loc = findIt(data, tgt);
         if (loc > -1)
