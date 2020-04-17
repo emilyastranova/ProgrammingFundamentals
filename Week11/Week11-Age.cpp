@@ -77,7 +77,6 @@ int findIt(struct file x[], int tmp) //This is binary search (BROKEN)
 
     bool found = false; // Test passes with sequential search
     int index = 0;
-    int tmpZip = 0;
     for (int i = 0; i < 20; i++)
     {
         if (x[i].age == tmp)
@@ -111,9 +110,8 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
 int main()
 {
-    int i, j, loc, tgt;
-    char more = 'Y', buff;
-    struct file temp;
+    int loc, tgt;
+    char more = 'Y';
     struct file data[] =
         {
             {"John J. Doe", "202 Harvey Rd", "College Station", "TX", "77450", 29},

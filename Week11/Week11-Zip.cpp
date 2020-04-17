@@ -81,7 +81,6 @@ int findIt(struct file x[], char tmp[]) //This is binary search (BROKEN)
     {
         if (strcmp(x[i].zip, tmp)==0)
         {
-            cout << "Found";
             found = true;
             index = i;
         }
@@ -111,10 +110,9 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
 int main()
 {
-    int i, j, loc; 
+    int loc; 
     char tgt[6];
-    char more = 'Y', buff;
-    struct file temp;
+    char more = 'Y';
     struct file data[] =
         {
             {"John J. Doe", "202 Harvey Rd", "College Station", "TX", "77450", 29},
@@ -155,7 +153,6 @@ int main()
         cout << "\n\nPlease input a zip to search: ";
         cin >> tgt;
         loc = findIt(data, tgt);
-        cout << tgt;
         if (loc > -1)
         {
             cout << "\n\n" << space(2) << "I am lucky, data at position " << loc + 1;
