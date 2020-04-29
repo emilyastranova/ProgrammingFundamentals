@@ -123,7 +123,7 @@ int main()
         cout << "Height: ";
         cin >> height;
 
-        int weight;
+        double weight;
         cout << "Weight: ";
         cin >> weight;
 

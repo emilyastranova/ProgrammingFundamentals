@@ -6,8 +6,8 @@
 using namespace std;
 
 ifstream inFile;
-ofstream outFile ("blinn.out");
-int depNum, quantity, cost, sale;
+ofstream outFile("blinn.out");
+double depNum, quantity, cost, sale;
 string items;
 
 /*
@@ -19,6 +19,7 @@ string items;
         5) Subtotal each department                     [X]
         6) Grand lower cost total                       [X]
 */
+
 
 void printHeader()
 {
@@ -34,18 +35,18 @@ void printHeader()
          << "\t   Market "
          << "\t Lower Cost" << endl;
     outFile << "\n\t\t\t\t\t   Blinn Apparel Store\n"
-         << endl;
+            << endl;
     outFile << "\t\t\t\t\t\t\tUnit    Cost"
-         << "\t\t    Extended" << endl;
+            << "\t\t    Extended" << endl;
     outFile << "\t\t     Quantity"
-         << "\t\tCost  "
-         << "  Market"
-         << "\t\t Cost"
-         << "\t   Market "
-         << "\t Lower Cost" << endl;
+            << "\t\tCost  "
+            << "  Market"
+            << "\t\t Cost"
+            << "\t   Market "
+            << "\t Lower Cost" << endl;
 }
 
-int findLower(int x, int y)
+double findLower(double x, double y)
 {
     if (x < y)
         return x;
@@ -83,14 +84,14 @@ int main()
     if (!inFile)
         cout << "\n\t\tCan't open data file: blinn.dat\n"; // Tell user file not found
 
-    cout << setprecision(3) << fixed;
-    outFile << setprecision(3) << fixed;
+    cout << fixed << setprecision(2);
+    outFile << setprecision(2) << fixed;
 
-    int current = 0;
+    double current = 0;
     bool firstList = true;
-    int depCost = 0;
-    int depSale = 0;
-    int grandTotal = 0;
+    double depCost = 0;
+    double depSale = 0;
+    double grandTotal = 0;
 
     while (inFile >> depNum >> items >> quantity >> cost >> sale) // Pull in numbers from blinn.dat and assign variables
     {
@@ -103,43 +104,43 @@ int main()
         }
         if (current != depNum && !firstList) // If department changes, write title of dept, display total above this for previous dept
         {
-            cout << "  Total\t\t\t\t\t\t\t       $" << depCost << ".00"
-                 << "  $" << depSale << ".00"
+            cout << "  Total\t\t\t\t\t\t\t\t$" << depCost
+                 << "  $" << depSale
                  << "      $"
-                 << findLower(depSale, depCost) << ".00" << endl;
-            outFile << "  Total\t\t\t\t\t\t\t       $" << depCost << ".00"
-                 << "  $" << depSale << ".00"
-                 << "      $"
-                 << findLower(depSale, depCost) << ".00" << endl;
+                 << findLower(depSale, depCost) << endl;
+            outFile << "  Total\t\t\t\t\t\t\t$" << depCost
+                    << "  $" << depSale
+                    << "      $"
+                    << findLower(depSale, depCost) << endl;
             grandTotal += findLower(depSale, depCost); // Add the lower cost up to grand lower total
             displayDepHeader(depNum);
             current = depNum;
             depCost = 0;
             depSale = 0;
         }
-        cout << right << setw(4) << "" << items << "\t\t" << quantity << "\t\t" << cost << ".00"
-             << "\t" << sale << ".00"
+        cout << right << setw(4) << "" << items << "\t\t" << quantity << "\t\t" << cost
+             << "\t" << sale
              << "\t\t" //Display and do the math
-             << cost * quantity << ".00"
-             << "   " << sale * quantity << ".00" << endl;
-        outFile << right << setw(4) << "" << items << "\t\t" << quantity << "\t\t" << cost << ".00"
-             << "\t" << sale << ".00"
-             << "\t\t" //Display and do the math
-             << cost * quantity << ".00"
-             << "   " << sale * quantity << ".00" << endl;
+             << cost * quantity
+             << "   " << sale * quantity << endl;
+        outFile << right << setw(4) << "" << items << "\t\t" << quantity << "\t\t" << cost
+                << "\t" << sale
+                << "\t\t" //Display and do the math
+                << cost * quantity
+                << "   " << sale * quantity << endl;
         depCost += cost * quantity; // Increment costs up for total
         depSale += sale * quantity;
     }
-    cout << "  Total\t\t\t\t\t\t\t       $" << depCost << ".00"
-         << "  $" << depSale << ".00"
+    cout << "  Total\t\t\t\t\t\t\t       $" << depCost
+         << "  $" << depSale
          << "      $"
-         << findLower(depSale, depCost) << ".00" << endl;                        // Print last total outside of loop
-    outFile << "  Total\t\t\t\t\t\t\t       $" << depCost << ".00"
-         << "  $" << depSale << ".00"
-         << "      $"
-         << findLower(depSale, depCost) << ".00" << endl;    
-    grandTotal += findLower(depSale, depCost);                                   // Add the lower cost up to grand lower total
-    cout << "Inventory at lower cost\t\t\t\t\t\t\t\t\t$" << grandTotal << ".00"; // Print grand lower total
+         << findLower(depSale, depCost) << endl; // Print last total outside of loop
+    outFile << "  Total\t\t\t\t\t\t\t       $" << depCost
+            << "  $" << depSale
+            << "      $"
+            << findLower(depSale, depCost) << endl;
+    grandTotal += findLower(depSale, depCost);                          // Add the lower cost up to grand lower total
+    cout << "Inventory at lower cost\t\t\t\t\t\t\t\t\t$" << grandTotal; // Print grand lower total
 
     inFile.close(); // Keep file from corrupting on program end
 }
