@@ -2,7 +2,9 @@
 
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 using namespace std;
+
 
 struct date
 {
@@ -85,6 +87,8 @@ void Person:: setWeight(double x)
 
 int main()
 {
+    ofstream outFile("Week14.out");
+    outFile << "Test";
     cout << setprecision(3) << fixed;
 
     Person p1, // No value
@@ -109,4 +113,7 @@ int main()
          << setw(2) << p2.getBDay().mm << "/" << setw(2) << p2.getBDay().dd
          << "/" << setw(4) << p2.getBDay().yy << "      " << fixed
          << setprecision(2) << p2.getWeight();
+
+    cout << "\n\n\t\t\tProgramming is FUN!  It is done by Tyler A. Harrison";
+    cout << "\n--------------------------------";
 }

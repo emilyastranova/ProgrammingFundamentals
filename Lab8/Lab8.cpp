@@ -6,6 +6,7 @@
 using namespace std;
 
 ifstream inFile;
+ofstream outFile;
 int depNum, quantity, cost, sale;
 string items;
 
