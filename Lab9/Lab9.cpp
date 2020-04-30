@@ -19,9 +19,10 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
 int ball1 = 0;
 int ball2 = 0;
-int scores1[] = {0,0,0,0,0,0,0,0,0,0,-1,1}; // Last 2 xtra
+int scores1[] = {0,0,0,0,0,0,0,0,0,0,-1,-1}; // Last 2 xtra
 int scores2[] = {0,0,0,0,0,0,0,0,0,0};
 int scoresTotal[] = {0,0,0,0,0,0,0,0,0,0};
+int scoreTotal = 0;
 bool isStrike = false;
 
 bool checkValidScore(int x, int y)
@@ -40,6 +41,7 @@ void getUserScores(int f)
     // Reset ball scores
         ball1 = 0;
         ball2 = 0;
+        scoreTotal = 0;
     // Get input on ball 1
         cout << space(4) << "Ball - 1 : ";
         cin >> ball1;
@@ -114,10 +116,32 @@ int main()
         }
 
         // Tally up score
-        scoresTotal[0] = scores1[0]+scores2[0];
-        for(int i = 1; i < 10; i++)
+        
+        for(int i = 0; i < 10; i++)
         {
-            scoresTotal[i] = (scores1[i]+scores2[i]) + scoresTotal[i-1];
+            // If open lane
+            if(scores1[i] + scores2[i] < 10)
+            {
+                scoreTotal += scores1[i]+scores2[i];
+            }
+            // If spare
+            if(scores1[i] + scores2[i] == 10 && scores1[i] != 10)
+            {
+                scoreTotal += 10 + scores1[i+1];
+            }
+
+            // If strike
+            if(scores1[i] == 10 && scores1[i+1] != 10)
+            {
+                scoreTotal += 10 + scores1[i+1] + scores2[i+1];
+            }
+            if(scores1[i] == 10 && scores1[i+1] == 10)
+            {
+                scoreTotal += 10 + scores1[i+1] + scores1[i+2];
+            }
+
+            scoresTotal[i] = scoreTotal;
+
         }
 
         // Bowl extra ball if last frame was a spare
@@ -146,17 +170,12 @@ int main()
                 cout << right << setw(3) << fixed << "Xtr-2" << " ";
         }
         cout << endl;
-        cout << "\tBall - 1 : ";
-        if(scoresTotal[10] != -1) 
-            for(int i = 0; i < 11; i++)
-                {
-                    cout << right << setw(3) << fixed << scores1[i] << " ";
-                }
-        else
-            for(int i = 0; i < 10; i++)
-                {
-                    cout << right << setw(3) << fixed << scores1[i] << " ";
-                }
+        cout << "\tBall - 1 : "; 
+        for(int i = 0; i < 12; i++)
+            {
+                cout << right << setw(3) << fixed << scores1[i] << " ";
+            }
+
         cout << endl;
         cout << "\tBall - 2 : ";
         for(int i = 0; i < 10; i++)

@@ -3,14 +3,25 @@
 #include <cstring>
 using namespace std;
 
-int main(){
+int x=1, y = 1;
 
-    cout << setprecision(2) << fixed;
+void runUntil(){
+    do
+    {
+        cout << "x = " << x << " y = " << y << endl;
+        cout << "Input x: ";
+        cin >> x;
+        cout << endl;
+        cout << "Input y: ";
+        cin >> y;
+        cout << endl;
+    } while (x < y);
+    
+}
 
-    double list[] = {100.0, 200.0, 300.0};
-    for (auto num : list)
-        cout << num << " ";
+int main()
+{
 
-    cout << endl << strlen("Tyler") << endl;
+    runUntil();
 
 }
