@@ -16,35 +16,116 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
     return tab;
 }
-
-int ball1 = 0;
-int ball2 = 0;
-int scores1[] = {0,0,0,0,0,0,0,0,0,0,-1,-1}; // Last 2 xtra
-int scores2[] = {0,0,0,0,0,0,0,0,0,0};
-int scoresTotal[] = {0,0,0,0,0,0,0,0,0,0};
+                                                                            // To unit test with your own list:
+int scores[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};  // <-- Comment
+//int scores[] = {1,0,1,9,10,0,9,0,9,1,4,4,4,4,4,2,1,5,9,1,9,0};                    // <-- Uncomment
+int scoresTotal[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int scoreTotal = 0;
-bool isStrike = false;
-
-bool checkValidScore(int x, int y)
-{
-    return (x+y)<=10;
-}
 
 bool isSpare(int x, int y)
 {
-    return (x+y)==10;
+    return (x + y) == 10 && x != 10 && y != 10;
 }
 
-void getUserScores(int f)
+bool isStrike(int x, int y)
 {
-    cout << space() << "Frame - " << f+1 << endl;
-    // Reset ball scores
-        ball1 = 0;
-        ball2 = 0;
-        scoreTotal = 0;
-    // Get input on ball 1
+    return x == 10 || y == 10;
+}
+
+bool isOpenFrame(int x, int y)
+{
+    return (x + y) < 10;
+}
+
+void tallyScores()
+{
+    int f = 0;
+    for (int i = 0; i < 20; i += 2)
+    {
+        if (isOpenFrame(scores[i], scores[i + 1]))
+        {
+            scoreTotal += (scores[i] + scores[i + 1]);
+            scoresTotal[f] = scoreTotal;
+        }
+        if (isSpare(scores[i], scores[i + 1]))
+        {
+            scoreTotal += (scores[i] + scores[i + 1] + scores[i + 2]);
+            scoresTotal[f] = scoreTotal;
+        }
+        if (isStrike(scores[i], scores[i + 1]))
+        {
+            scoreTotal += (scores[i] + scores[i + 1] + scores[i + 2] + scores[i + 3]);
+            scoresTotal[f] = scoreTotal;
+        }
+        f++;
+    }
+}
+
+void displayScore()
+{
+    cout << "\t   Frame - ";
+    for (int i = 0; i < 12; i++)
+    {
+        if (i < 10)
+            cout << right << setw(3) << fixed << i + 1 << " ";
+        if (i == 10)
+            cout << right << setw(3) << fixed << " Xtr-1"
+                 << " ";
+        if (i == 11)
+            cout << right << setw(3) << fixed << "Xtr-2"
+                 << " ";
+    }
+    cout << endl;
+    cout << "\tBall - 1 : ";
+    for (int i = 0; i < 24; i += 2)
+    {
+        cout << right << setw(3) << fixed << scores[i] << " ";
+    }
+
+    cout << endl;
+    cout << "\tBall - 2 : ";
+    for (int i = 1; i < 20; i += 2)
+    {
+        cout << right << setw(3) << fixed << scores[i] << " ";
+    }
+    cout << endl;
+    cout << "\t   Score : ";
+    for (int i = 0; i < 10; i++)
+    {
+        cout << right << setw(3) << fixed << scoresTotal[i] << " ";
+    }
+}
+
+void clearScores()
+{
+    scoreTotal = 0;
+    for (int i = 0; i < 22; i++)
+        scores[i] = 0;
+    for (int i = 0; i < 10; i++)
+        scoresTotal[i] = 0;
+}
+
+bool checkValidScore(int x, int y)
+{
+    if (x > 10 || y > 10 || x + y > 10)
+        return false;
+    else
+        return true;
+}
+
+void getUserScores()
+{
+    int ball1 = 0;
+    int ball2 = 0;
+    int frame = 1;
+
+    for (int i = 0; i < 20; i += 2)
+    { 
+        cout << space() << "Frame - " << frame << endl;
+        frame++;
         cout << space(4) << "Ball - 1 : ";
         cin >> ball1;
+        cout << endl;
 
         if(ball1 > 10)
         {
@@ -53,33 +134,119 @@ void getUserScores(int f)
                 cout << space() << space() << "Illegal score, do one more time..." << endl;
                 cout << space(4) << "Ball - 1 : ";
                 cin >> ball1;
+                cout << endl;
             } while (ball1 > 10);
             
         }
 
-        if(ball1 == 10)
-        {
-            cout << space() << space() << "Congratulation! It is STRIKE..." << endl;
-            isStrike = true;
-        }
-        else
-            isStrike = false;
-
-        cout << endl;
-        // If ball 1 not equal 10 or last round, get ball 2
-        if(ball1 != 10 || (f==9 && ball1 !=10))
+        if(ball1 != 10)
         {
             cout << space(4) << "Ball - 2 : ";
             cin >> ball2;
-            
-        if (isSpare(ball1, ball2) && !isStrike)
-        {
-            cout << space() << space() << "Not bad, it is SPARE..." << endl;
-        }
             cout << endl;
+
+            if(ball2 > 10)
+            {
+                do
+                {
+                    cout << space() << space() << "Illegal score, do one more time..." << endl;
+                    cout << space(4) << "Ball - 2 : ";
+                    cin >> ball2;
+                    cout << endl;
+                } while (ball2 > 10);
+                
+            }
         }
         else
+        {
             ball2 = 0;
+            cout << space() << space() << "Congratulation! It is STRIKE..." << endl;
+        }
+
+        if (checkValidScore(ball1, ball2))
+        {
+            scores[i] = ball1;
+            scores[i + 1] = ball2;
+        }
+        else
+        {
+            do
+            {
+                cout << space() << space() << "Illegal score, do one more time..." << endl;
+                cout << space(4) << "Ball - 2 : ";
+                cin >> ball2;
+                cout << endl;
+            } while (!checkValidScore(ball1, ball2));
+            
+        }
+        if(isSpare(ball1, ball2))
+            cout << space() << space() << "Not bad, it is SPARE..." << endl;
+        if(!isStrike(ball1, ball2) && !isSpare(ball1, ball2))
+            cout << space() << space() << "Need work harder, Dude!" << endl;
+    }
+}
+
+void extraBallCheck()
+{
+    int extra1 = 0;
+    int extra2 = 0;
+    if(isSpare(scores[18], scores[19])) // One extra ball
+    {
+        cout << "Extra ball 1: ";
+        cin >> extra1;
+        cout << endl;
+
+        if(extra1 > 10)
+        {
+            do
+            {
+                cout << space() << space() << "Illegal score, do one more time..." << endl;
+                cout << "Extra ball 1: ";
+                cin >> extra1;
+                cout << endl;
+            } while (extra1 > 10);
+            
+        }
+    }
+
+    if(isStrike(scores[18], scores[19])) // Two extra balls
+    {
+        cout << "Extra ball 1: ";
+        cin >> extra1;
+        cout << endl;
+
+        if(extra1 > 10)
+        {
+            do
+            {
+                cout << space() << space() << "Illegal score, do one more time..." << endl;
+                cout << "Extra ball 1: ";
+                cin >> extra1;
+                cout << endl;
+            } while (extra1 > 10);
+            
+        }
+
+        cout << "Extra ball 2: ";
+        cin >> extra1;
+        cout << endl;
+
+        if(extra2 > 10 || checkValidScore(extra1, extra2))
+        {
+            do
+            {
+                cout << space() << space() << "Illegal score, do one more time..." << endl;
+                cout << "Extra ball 2: ";
+                cin >> extra2;
+                cout << endl;
+            } while (extra2 > 10);
+            
+        }
+    }
+
+    scores[20] = extra1;
+    scores[21] = extra2;
+
 }
 
 int main()
@@ -88,107 +255,11 @@ int main()
     char more;
     do // Input loop, ends when user says N
     {
-        // Frame loop, runs 10 times
-        for(int f = 0; f < 10; f++){    
-
-        // Get score from user
-            getUserScores(f);
-
-        // Check if scores are valid
-            if(!checkValidScore(ball1, ball2))
-            {
-                do
-                {
-                    cout << space() << space() << "Illegal score, do one more time..." << endl;
-                    cout << space(4) << "Ball - 2 : ";
-                    cin >> ball2;
-                    if (isSpare(ball1, ball2) && !isStrike)
-                    {
-                        cout << space() << space() << "Not bad, it is SPARE..." << endl;
-                    }
-                    cout << endl;
-                } while (!checkValidScore(ball1, ball2));
-                
-            }
-        // Store ball scores
-            scores1[f] = ball1;
-            scores2[f] = ball2;
-        }
-
-        // Tally up score
-        
-        for(int i = 0; i < 10; i++)
-        {
-            // If open lane
-            if(scores1[i] + scores2[i] < 10)
-            {
-                scoreTotal += scores1[i]+scores2[i];
-            }
-            // If spare
-            if(scores1[i] + scores2[i] == 10 && scores1[i] != 10)
-            {
-                scoreTotal += 10 + scores1[i+1];
-            }
-
-            // If strike
-            if(scores1[i] == 10 && scores1[i+1] != 10)
-            {
-                scoreTotal += 10 + scores1[i+1] + scores2[i+1];
-            }
-            if(scores1[i] == 10 && scores1[i+1] == 10)
-            {
-                scoreTotal += 10 + scores1[i+1] + scores1[i+2];
-            }
-
-            scoresTotal[i] = scoreTotal;
-
-        }
-
-        // Bowl extra ball if last frame was a spare
-            cout << space() << "Extra - 1: ";
-            cin >> ball1;
-            if (ball1 > 10){
-                do
-                {
-                    cout << space() << space() << "Illegal score, do one more time..." << endl;
-                    cout << space() << "Extra - 1: ";
-                    cin >> ball1;
-                } while (ball1>10);
-            }
-            scores1[10] = ball1;
-                
-
-        // Display score
-        cout << "\t   Frame - ";
-        for(int i = 0; i < 12; i++)
-        {
-            if(i < 10)
-                cout << right << setw(3) << fixed << i+1 << " ";
-            if(i==10)
-                cout << right << setw(3) << fixed << " Xtr-1" << " ";
-            if(i==11)
-                cout << right << setw(3) << fixed << "Xtr-2" << " ";
-        }
-        cout << endl;
-        cout << "\tBall - 1 : "; 
-        for(int i = 0; i < 12; i++)
-            {
-                cout << right << setw(3) << fixed << scores1[i] << " ";
-            }
-
-        cout << endl;
-        cout << "\tBall - 2 : ";
-        for(int i = 0; i < 10; i++)
-        {
-            cout << right << setw(3) << fixed << scores2[i] << " ";
-        }
-        cout << endl;
-        cout << "\t   Score : ";
-        for(int i = 0; i < 10; i++)
-        {
-            cout << right << setw(3) << fixed << scoresTotal[i] << " ";
-        }
-        
+        getUserScores(); // Comment out for unit testing
+        extraBallCheck();
+        tallyScores();
+        displayScore();
+        clearScores();  // In case they want to run program again
 
         cout << "\n\t\t\t\tDo more (Y/N)? ";
         cin >> more;
