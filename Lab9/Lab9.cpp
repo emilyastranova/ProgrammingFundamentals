@@ -16,20 +16,21 @@ string space(int x) // Specified amount of tabs (e.g. space(4))
 
     return tab;
 }
-                                                                            // To unit test with your own list:
+
 int scores[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};  // <-- Comment
-//int scores[] = {1,0,1,9,10,0,9,0,9,1,4,4,4,4,4,2,1,5,9,1,9,0};                    // <-- Uncomment
+
 int scoresTotal[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int scoreTotal = 0;
+int isExtra = 0;
 
 bool isSpare(int x, int y)
 {
-    return (x + y) == 10 && x != 10 && y != 10;
+    return (x + y) == 10 && x != 10;
 }
 
 bool isStrike(int x, int y)
 {
-    return x == 10 || y == 10;
+    return x == 10;
 }
 
 bool isOpenFrame(int x, int y)
@@ -40,7 +41,7 @@ bool isOpenFrame(int x, int y)
 void tallyScores()
 {
     int f = 0;
-    for (int i = 0; i < 20; i += 2)
+    for (int i = 0; i < 22; i += 2)
     {
         if (isOpenFrame(scores[i], scores[i + 1]))
         {
@@ -77,10 +78,22 @@ void displayScore()
     }
     cout << endl;
     cout << "\tBall - 1 : ";
-    for (int i = 0; i < 24; i += 2)
-    {
-        cout << right << setw(3) << fixed << scores[i] << " ";
-    }
+
+    if(isExtra == 0)
+        for (int i = 0; i < 20; i += 2)
+        {
+            cout << right << setw(3) << fixed << scores[i] << " ";
+        }
+    if(isExtra == 1)
+        for (int i = 0; i < 22; i += 2)
+        {
+            cout << right << setw(3) << fixed << scores[i] << " ";
+        }
+    if(isExtra == 2)
+        for (int i = 0; i < 24; i += 2)
+        {
+            cout << right << setw(3) << fixed << scores[i] << " ";
+        }
 
     cout << endl;
     cout << "\tBall - 2 : ";
@@ -99,6 +112,7 @@ void displayScore()
 void clearScores()
 {
     scoreTotal = 0;
+    isExtra = 0;
     for (int i = 0; i < 22; i++)
         scores[i] = 0;
     for (int i = 0; i < 10; i++)
@@ -190,8 +204,9 @@ void extraBallCheck()
 {
     int extra1 = 0;
     int extra2 = 0;
-    if(isSpare(scores[18], scores[19])) // One extra ball
+    if(isSpare(scores[18], scores[19]) && scores[19] != 10) // One extra ball
     {
+        isExtra = 1;
         cout << "Extra ball 1: ";
         cin >> extra1;
         cout << endl;
@@ -209,7 +224,7 @@ void extraBallCheck()
         }
     }
 
-    if(isStrike(scores[18], scores[19])) // Two extra balls
+    if(isStrike(scores[18], scores[19]) && scores[19] != 10) // Two extra balls
     {
         cout << "Extra ball 1: ";
         cin >> extra1;
@@ -227,11 +242,13 @@ void extraBallCheck()
             
         }
 
+        extra2 = 0;
         cout << "Extra ball 2: ";
-        cin >> extra1;
+        cin >> extra2;
         cout << endl;
+        isExtra = 2;
 
-        if(extra2 > 10 || checkValidScore(extra1, extra2))
+        if(extra2 > 10 || extra1+extra2 > 10)
         {
             do
             {
@@ -246,6 +263,7 @@ void extraBallCheck()
 
     scores[20] = extra1;
     scores[21] = extra2;
+    scores[22] = extra2;
 
 }
 
