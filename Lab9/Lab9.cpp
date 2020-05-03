@@ -55,8 +55,16 @@ void tallyScores()
         }
         if (isStrike(scores[i], scores[i + 1]))
         {
-            scoreTotal += (scores[i] + scores[i + 1] + scores[i + 2] + scores[i + 3]);
+            if (scores[i+2] != 10)
+            {
+                scoreTotal += (scores[i] + scores[i + 2] + scores[i + 3]);
+            }
+            else
+            {
+                scoreTotal += (scores[i] + scores[i + 2] + scores[i + 4]);
+            }
             scoresTotal[f] = scoreTotal;
+            
         }
         f++;
     }
