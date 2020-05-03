@@ -129,7 +129,7 @@ void clearScores()
 
 bool checkValidScore(int x, int y)
 {
-    if (x > 10 || y > 10 || x + y > 10)
+    if (x > 10 || y > 10 || x + y > 10 || x < 0 || y < 0)
         return false;
     else
         return true;
@@ -149,7 +149,7 @@ void getUserScores()
         cin >> ball1;
         cout << endl;
 
-        if(ball1 > 10)
+        if(ball1 > 10 || ball1 < 0)
         {
             do
             {
@@ -157,7 +157,7 @@ void getUserScores()
                 cout << space(4) << "Ball - 1 : ";
                 cin >> ball1;
                 cout << endl;
-            } while (ball1 > 10);
+            } while (ball1 > 10 || ball1 < 0);
             
         }
 
@@ -167,7 +167,7 @@ void getUserScores()
             cin >> ball2;
             cout << endl;
 
-            if(ball2 > 10)
+            if(ball2 > 10 || ball2 < 0)
             {
                 do
                 {
@@ -175,7 +175,7 @@ void getUserScores()
                     cout << space(4) << "Ball - 2 : ";
                     cin >> ball2;
                     cout << endl;
-                } while (ball2 > 10);
+                } while (ball2 > 10 || ball2 < 0);
                 
             }
         }
@@ -219,7 +219,7 @@ void extraBallCheck()
         cin >> extra1;
         cout << endl;
 
-        if(extra1 > 10)
+        if(extra1 > 10 || extra1 < 0)
         {
             do
             {
@@ -227,7 +227,7 @@ void extraBallCheck()
                 cout << "Extra ball 1: ";
                 cin >> extra1;
                 cout << endl;
-            } while (extra1 > 10);
+            } while (extra1 > 10 || extra1 < 0);
             
         }
     }
@@ -238,7 +238,7 @@ void extraBallCheck()
         cin >> extra1;
         cout << endl;
 
-        if(extra1 > 10)
+        if(extra1 > 10 || extra1 < 0)
         {
             do
             {
@@ -246,7 +246,7 @@ void extraBallCheck()
                 cout << "Extra ball 1: ";
                 cin >> extra1;
                 cout << endl;
-            } while (extra1 > 10);
+            } while (extra1 > 10 || extra1 < 0);
             
         }
 
@@ -256,7 +256,7 @@ void extraBallCheck()
         cout << endl;
         isExtra = 2;
 
-        if(extra2 > 10 || extra1+extra2 > 10)
+        if(extra2 > 10 || extra2 < 0)
         {
             do
             {
@@ -264,7 +264,7 @@ void extraBallCheck()
                 cout << "Extra ball 2: ";
                 cin >> extra2;
                 cout << endl;
-            } while (extra2 > 10);
+            } while (extra2 > 10 || extra2 < 0);
             
         }
     }
@@ -287,6 +287,7 @@ int main()
         displayScore();
         clearScores();  // In case they want to run program again
 
+        cout << "\n\t\t\t\tCreated by Tyler Harrison";
         cout << "\n\t\t\t\tDo more (Y/N)? ";
         cin >> more;
     } while (more == 'y' || more == 'Y');
