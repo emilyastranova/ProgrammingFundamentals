@@ -21,7 +21,7 @@ int scores[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 int scoresTotal[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int scoreTotal = 0;
-int isExtra = 0;
+bool isExtra = false;
 
 bool isSpare(int x, int y)
 {
@@ -87,21 +87,14 @@ void displayScore()
     cout << endl;
     cout << "\tBall - 1 : ";
 
-    if(isExtra == 0)
-        for (int i = 0; i < 20; i += 2)
-        {
+    for (int i = 0; i < 24; i += 2)
+    {
+        if(i < 20)
             cout << right << setw(3) << fixed << scores[i] << " ";
-        }
-    if(isExtra == 1)
-        for (int i = 0; i < 22; i += 2)
-        {
-            cout << right << setw(3) << fixed << scores[i] << " ";
-        }
-    if(isExtra == 2)
-        for (int i = 0; i < 24; i += 2)
-        {
-            cout << right << setw(3) << fixed << scores[i] << " ";
-        }
+        else
+            if(scores[i] != 0)
+                cout << right << setw(3) << fixed << scores[i] << " ";
+    }
 
     cout << endl;
     cout << "\tBall - 2 : ";
@@ -212,7 +205,8 @@ void extraBallCheck()
 {
     int extra1 = 0;
     int extra2 = 0;
-    if(isSpare(scores[18], scores[19]) && scores[19] != 10) // One extra ball
+    isExtra = 0;
+    if(isSpare(scores[18], scores[19]) || isStrike(scores[18], scores[19])) // If frame 10 was a spare, 1 extra ball
     {
         isExtra = 1;
         cout << "Extra ball 1: ";
@@ -230,45 +224,51 @@ void extraBallCheck()
             } while (extra1 > 10 || extra1 < 0);
             
         }
-    }
-
-    if(isStrike(scores[18], scores[19]) && scores[19] != 10) // Two extra balls
-    {
-        cout << "Extra ball 1: ";
-        cin >> extra1;
-        cout << endl;
-
-        if(extra1 > 10 || extra1 < 0)
+        if(isStrike(scores[18], scores[19]))
         {
-            do
+            if(extra1 == 10 ) // Two extra balls
             {
-                cout << space() << space() << "Illegal score, do one more time..." << endl;
-                cout << "Extra ball 1: ";
-                cin >> extra1;
-                cout << endl;
-            } while (extra1 > 10 || extra1 < 0);
-            
-        }
 
-        extra2 = 0;
-        cout << "Extra ball 2: ";
-        cin >> extra2;
-        cout << endl;
-        isExtra = 2;
-
-        if(extra2 > 10 || extra2 < 0)
-        {
-            do
-            {
-                cout << space() << space() << "Illegal score, do one more time..." << endl;
+                extra2 = 0;
                 cout << "Extra ball 2: ";
                 cin >> extra2;
                 cout << endl;
-            } while (extra2 > 10 || extra2 < 0);
-            
+
+                if(extra2 > 10 || extra2 < 0)
+                {
+                    do
+                    {
+                        cout << space() << space() << "Illegal score, do one more time..." << endl;
+                        cout << "Extra ball 2: ";
+                        cin >> extra2;
+                        cout << endl;
+                    } while (extra2 > 10 || extra2 < 0);
+                    
+                }
+            }
+
+            if(extra1 < 10) // Two extra balls
+            {
+
+                extra2 = 0;
+                cout << "Extra ball 2: ";
+                cin >> extra2;
+                cout << endl;
+
+                if(extra2 > 10 || extra1 + extra2 > 10 || extra2 < 0)
+                {
+                    do
+                    {
+                        cout << space() << space() << "Illegal score, do one more time..." << endl;
+                        cout << "Extra ball 2: ";
+                        cin >> extra2;
+                        cout << endl;
+                    } while (extra2 > 10 || extra1 + extra2 > 10 || extra2 < 0);
+                    
+                }
+            }
         }
     }
-
     scores[20] = extra1;
     scores[21] = extra2;
     scores[22] = extra2;
@@ -287,7 +287,7 @@ int main()
         displayScore();
         clearScores();  // In case they want to run program again
 
-        cout << "\n\t\t\t\tCreated by Tyler Harrison";
+        cout << "\n\t\t\t\tCreated by Tyler Harrison ";
         cout << "\n\t\t\t\tDo more (Y/N)? ";
         cin >> more;
     } while (more == 'y' || more == 'Y');
